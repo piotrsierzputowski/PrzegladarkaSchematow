@@ -1,0 +1,34 @@
+{
+ "manifest_version": 3,
+ "name": "Przeglądarka schematów – domyślny podgląd PDF",
+ "version": "1.0",
+ "description": "Otwiera pliki PDF w Przeglądarce schematów (odnośniki z podświetlaniem, porównywanie wersji, notatki). Kliknięcie ikony włącza/wyłącza przejmowanie PDF-ów.",
+ "permissions": [
+  "declarativeNetRequest",
+  "storage"
+ ],
+ "host_permissions": [
+  "<all_urls>"
+ ],
+ "background": {
+  "service_worker": "background.js"
+ },
+ "action": {
+  "default_title": "Przeglądarka schematów: włączona (kliknij, aby wyłączyć)"
+ },
+ "web_accessible_resources": [
+  {
+   "resources": [
+    "viewer.html"
+   ],
+   "matches": [
+    "<all_urls>"
+   ]
+  }
+ ],
+ "icons": {
+  "16": "icon16.png",
+  "48": "icon48.png",
+  "128": "icon128.png"
+ }
+}

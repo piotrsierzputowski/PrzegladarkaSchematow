@@ -1,0 +1,14 @@
+Przeglądarka schematów jako domyślny podgląd PDF w Chrome
+=========================================================
+1. Rozpakuj ten folder w stałym miejscu (np. C:\Narzedzia\przegladarka_schematow). Nie usuwaj go potem - Chrome czyta rozszerzenie z tego folderu.
+2. W Chrome otwórz chrome://extensions i włącz "Tryb dewelopera" (prawy górny róg).
+3. Kliknij "Załaduj rozpakowane" i wskaż folder z rozszerzeniem.
+4. Aby działało też dla plików z dysku (file://): na karcie rozszerzenia kliknij "Szczegóły" i włącz "Zezwalaj na dostęp do adresów URL plików".
+5. Gotowe: każde otwarcie adresu kończącego się na .pdf (link, plik z dysku, przeciągnięcie do Chrome) otwiera się w Przeglądarce schematów.
+
+Ikona rozszerzenia: kliknięcie włącza/wyłącza przejmowanie PDF-ów (przy wyłączeniu na ikonie widać "OFF" i PDF-y otwiera zwykły podgląd Chrome).
+
+Uwagi:
+- Przekierowywane są adresy z rozszerzeniem .pdf. PDF-y bez takiego rozszerzenia w adresie (np. generowane przez serwer) otworzy zwykły podgląd Chrome.
+- Notatki: przycisk "Zapis auto" w panelu Notatki zapyta raz o folder ze schematami (ze względów bezpieczeństwa Chrome nie zdradza rozszerzeniu, w jakim folderze leży plik).
+- Chrome może przy starcie pokazywać komunikat o rozszerzeniach w trybie dewelopera - można go zamknąć.

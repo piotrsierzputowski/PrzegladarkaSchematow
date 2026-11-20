@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Przeglądarka schematów</title><link rel="stylesheet" href="viewer.css"></head>
+<body>
+<div id="bar">
+  <label class="btn primary" for="file">Otwórz PDF</label>
+  <input id="file" type="file" accept="application/pdf,.pdf" class="hide">
+  <button id="back" disabled title="Wróć (Alt+←)">← Wróć</button>
+  <button id="prev" disabled title="Poprzednia strona">‹</button>
+  <input id="pno" type="number" min="1" value="1" disabled>
+  <span id="info">/ –</span>
+  <span class="lbl" style="margin-left:8px">Diagram</span>
+  <input id="dno" type="text" inputmode="numeric" list="dlist" placeholder="nr" disabled title="Wpisz numer diagramu i naciśnij Enter (kolejny Enter przechodzi do następnej strony tego samego diagramu)">
+  <datalist id="dlist"></datalist>
+  <span style="width:10px"></span>
+  <input id="q" type="search" placeholder="Szukaj tekstu… (Ctrl+F)" disabled title="Enter — następny wynik, Shift+Enter — poprzedni">
+  <button id="qprev" disabled title="Poprzedni wynik (Shift+Enter)">▲</button>
+  <button id="qnext" disabled title="Następny wynik (Enter)">▼</button>
+  <span id="qcount"></span>
+  <button id="next" disabled title="Następna strona">›</button>
+  <button id="zout" disabled title="Pomniejsz">−</button>
+  <button id="zin" disabled title="Powiększ">+</button>
+  <button id="fitw" disabled title="Dopasuj do szerokości ekranu">↔ Szerokość</button>
+  <button id="fith" disabled title="Dopasuj do wysokości ekranu (cała strona)">↕ Wysokość</button>
+  <button id="cmpb" disabled title="Porównaj dwie wersje schematów">⇄ Porównaj</button>
+  <button id="annb" disabled title="Notatki tekstowe i rysowanie ołówkiem (zapisywane poza plikiem PDF)">✎ Notatki</button>
+  <span class="sp"></span>
+  <span id="diag" style="color:var(--mut)"></span>
+</div>
+<div id="abar" class="hide">
+  <span class="seg" id="atools"><button data-t="browse" class="on" title="Zwykłe przeglądanie, odnośniki działają">Przeglądaj</button><button data-t="text" title="Kliknij w schemat, aby dodać notatkę tekstową">T Tekst</button><button data-t="pen" title="Rysowanie ołówkiem (przeciągnij myszą / piórem / palcem)">Ołówek</button><button data-t="erase" title="Gumka — przeciągnij po rysunku ołówkiem">Gumka</button></span>
+  <span id="acols" style="display:inline-flex;gap:5px"></span>
+  <select id="awid" title="Grubość linii"><option value="1.5">cienka</option><option value="3" selected>średnia</option><option value="6">gruba</option></select>
+  <label title="Półprzezroczysta gruba linia"><input type="checkbox" id="ahi"> zakreślacz</label>
+  <button id="aundo" disabled title="Cofnij (Ctrl+Z)">↶ Cofnij</button>
+  <label><input type="checkbox" id="ashow" checked> pokaż notatki</label>
+  <button id="aprev" title="Poprzednia strona z notatkami">‹</button><button id="anext" title="Następna strona z notatkami">›</button>
+  <span class="sp"></span><span id="astat"></span>
+  <button id="aauto" title="Automatycznie zapisuje notatki w pliku „<nazwa>_notatki_auto.json” w folderze ze schematem i wczytuje go przy otwarciu schematu">Zapis auto</button>
+  <button id="asave" title="Zapisuje notatki w osobnym pliku (np. w folderze ze schematem). PDF pozostaje nietknięty.">Zapisz obok schematu…</button>
+  <button id="aload">Wczytaj z pliku…</button><button id="adl">Pobierz kopię</button><button id="aclr">Usuń wszystkie</button>
+  <input type="file" id="aimp" accept=".json,application/json" class="hide">
+</div>
+<div id="msg">Otwórz plik PDF ze schematami. Kliknij odnośnik między potencjałami (podświetla się po najechaniu), a właściwy potencjał na stronie docelowej zostanie obramowany.</div>
+<div id="view">
+  <div id="empty"><b>Upuść tutaj plik PDF ze schematami</b><span>albo użyj przycisku „Otwórz PDF". Plik jest przetwarzany tylko w przeglądarce.</span></div>
+  <div id="pagebox" class="hide"><canvas id="cv"></canvas><div id="hits"></div><div id="links"></div><div id="band" class="hide"></div><div id="hl" class="hide"></div></div>
+</div>
+
+
+<div id="cmp" class="hide">
+  <div id="cbar">
+    <button id="cclose" title="Zamknij porównywanie (Esc)">✕ Zamknij</button>
+    <span class="lbl">Stara:</span><b id="cnA">–</b>
+    <button id="cswap" title="Zamień wersje miejscami" disabled>⇄</button>
+    <span class="lbl">Nowa:</span><b id="cnB">nie wczytano</b>
+    <label class="btn primary" for="cfile">Wczytaj nową wersję…</label><input id="cfile" type="file" accept="application/pdf,.pdf" class="hide">
+    <span class="sp"></span>
+    <button id="cprev" disabled title="Poprzednia zmiana (P lub ←)">▲ Poprz. zmiana</button>
+    <button id="cnext" disabled title="Następna zmiana (N lub →)">▼ Nast. zmiana</button>
+    <span class="seg" id="cmode">
+      <button data-m="ov" class="on" title="Stara na czerwono, nowa na zielono (1)">Nakładka</button><button data-m="sbs" title="Obok siebie (2)">Obok siebie</button><button data-m="blink" title="Naprzemiennie stara/nowa (3)">Miganie</button><button data-m="A" title="Tylko stara (4)">Stara</button><button data-m="B" title="Tylko nowa (5)">Nowa</button>
+    </span>
+    <button id="czout" title="Pomniejsz">−</button><button id="czin" title="Powiększ">+</button><button id="cfw">↔</button><button id="cfh">↕</button>
+    <span class="lg" id="clg"><span><i style="background:#d71414"></i>usunięto</span><span><i style="background:#009628"></i>dodano</span><span><i style="background:#bbb"></i>bez zmian</span></span>
+  </div>
+  <div id="cmsg">Wczytaj drugą wersję PDF, aby porównać ją z otwartą.</div>
+  <div id="cmain">
+    <div id="clist"><div id="clh"><label><input type="checkbox" id="conly" checked> tylko zmienione strony</label><div id="cprog"></div></div><div id="citems"></div></div>
+    <div id="cview"><div id="crow"></div><div id="cempty"><b>Upuść tutaj plik PDF z nową wersją</b><span>albo użyj przycisku „Wczytaj nową wersję…". Porównanie odbywa się w przeglądarce.</span></div></div>
+  </div>
+</div>
+<script src="pdf.min.js"></script>
+<script src="viewer.js"></script>
+</body></html>
